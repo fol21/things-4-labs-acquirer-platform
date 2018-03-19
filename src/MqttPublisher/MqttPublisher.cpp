@@ -59,11 +59,11 @@ void MqttPublisher::onMessage(void (*callback)(char*, uint8_t*, unsigned int))
 
 void MqttPublisher::middlewares(char* topic, uint8_t* payload, unsigned int length)
 {
-    if(strcmp(topic, (STREAM_PATTERN_STRING+CONTINOUS_STREAM_STRING).c_str()) == 0)
+    if(strcmp(topic, (String(this->client_id) + STREAM_PATTERN_STRING+CONTINOUS_STREAM_STRING).c_str()) == 0)
         {            
             this->c_stream.onMessage(topic, (const char*) payload, length);
         }
-    else if(strcmp(topic, (STREAM_PATTERN_STRING+PERIODIC_STREAM_STRING).c_str()) == 0)
+    else if(strcmp(topic, (String(this->client_id) + STREAM_PATTERN_STRING+PERIODIC_STREAM_STRING).c_str()) == 0)
         {
             this->p_stream.onMessage(topic, (const char*) payload, length);
         }
@@ -145,9 +145,9 @@ bool MqttPublisher::reconnect(void(*handler)(void))
     {
         if(this->pubSubClient->connect(this->client_id))
         {
-            this->pubSubClient->subscribe(StringToCharArray(STREAM_PATTERN_STRING + 
+            this->pubSubClient->subscribe(StringToCharArray(String(this->client_id) + STREAM_PATTERN_STRING + 
                                 CONTINOUS_STREAM_STRING));
-            this->pubSubClient->subscribe(StringToCharArray(STREAM_PATTERN_STRING + 
+            this->pubSubClient->subscribe(StringToCharArray(String(this->client_id) + STREAM_PATTERN_STRING + 
                                 PERIODIC_STREAM_STRING));
 
             if(!this->streamList.empty())
@@ -155,7 +155,8 @@ bool MqttPublisher::reconnect(void(*handler)(void))
                 for (std::list<data_stream*>::iterator it=this->streamList.begin(); 
                         it!=this->streamList.end(); ++it)
                 {
-                    this->pubSubClient->subscribe((STREAM_PATTERN_STRING + String((*it)->Name())).c_str()); 
+                    this->pubSubClient->subscribe((String(this->client_id) + 
+                                        STREAM_PATTERN_STRING + String((*it)->Name())).c_str()); 
                 }
             }
             

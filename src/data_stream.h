@@ -38,6 +38,7 @@ protected:
     char* name;
     int  threshold = 0;
     char* payload = NULL;
+    bool lock = false;
 };
 
 class continous_stream : public data_stream

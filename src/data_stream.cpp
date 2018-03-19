@@ -3,7 +3,7 @@
 
 const char* data_stream::send(const char* message)
 {
-   if(payload != NULL)
+   if(payload != NULL && !(this->lock))
     this->process();
 
     if(this->threshold != 0)
