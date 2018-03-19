@@ -1,0 +1,33 @@
+{
+  "name": "t4l-Publisher",
+  "keywords": "things-4-labs, t4l, Publisher",
+  "description": "API for data acquisition and publishing of data streams in Arduino Framework based platforms. Edit Add topics",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fol21/things-4-labs-acquirer-platform.git"
+  },
+  "authors": [{
+    "name": "Fernando Lima",
+    "email": "folivelima@gmail.com",
+    "url": "https://github.com/fol21",
+    "maintainer": true
+  }],
+  "dependencies": 
+  [
+    {
+      "name": "PubSubClient",
+      "frameworks": "arduino"
+    },
+    {
+      "name": "ArduinJson",
+      "frameworks": "arduino"
+    }
+  ],
+  "version": "0.1.0",
+  "frameworks": "arduino",
+  "platforms": 
+  [
+    "atmelavr",
+    "espressif"
+  ]
+}
