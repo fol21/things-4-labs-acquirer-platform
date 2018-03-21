@@ -1,6 +1,5 @@
-#include <ESP8266WiFi.h>
 #include <MqttPublisher.h>
-
+#include <WiFi.h>
 
 WiFiClient espClient;
 struct MqttConfiguration config = {"FOL", "21061992", "ESP8266-test", "192.168.15.4", 1883};
@@ -45,7 +44,12 @@ void setup()
 {
   Serial.begin(115200);
   delay(3000);
-  publisher.onMessage(callback);
+  publisher.onMessage(
+  [=](char* topic, uint8_t* payload, unsigned int length)
+  {
+    publisher.middlewares(topic, payload, length);
+    callback(topic, payload, length);
+  });
   cs = new const_stream("initial");
   Serial.println(cs->constant);  
   publisher.add_stream(cs);

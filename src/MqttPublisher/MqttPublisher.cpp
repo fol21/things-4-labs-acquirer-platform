@@ -26,6 +26,7 @@ MqttPublisher::MqttPublisher(Client& client, MqttConfiguration& config)
 
     this->c_stream = continous_stream();
     this->p_stream = periodic_stream();
+
 }
 
 MqttPublisher::MqttPublisher(Client& client,  const char* client_id, const char* host, 
@@ -41,20 +42,11 @@ MqttPublisher::MqttPublisher(Client& client,  const char* client_id, const char*
     this->p_stream = periodic_stream();
 }
 
-// void MqttPublisher::onMessage(MQTT_CALLBACK_SIGNATURE)
-// {
-//     //this->message_callback = callback;
-//     this->pubSubClient->setCallback(callback);
-// }
 
 void MqttPublisher::onMessage(void (*callback)(char*, uint8_t*, unsigned int))
 {
     this->message_callback = callback;
-    this->pubSubClient->setCallback(
-        [this] (char* topic, uint8_t* payload, unsigned int length) 
-        { 
-            this->middlewares(topic, payload, length); 
-        });
+    this->pubSubClient->setCallback(callback);
 }
 
 void MqttPublisher::middlewares(char* topic, uint8_t* payload, unsigned int length)
@@ -75,9 +67,6 @@ void MqttPublisher::middlewares(char* topic, uint8_t* payload, unsigned int leng
         const char* c = s.c_str();
         this->find_stream(c)->onMessage(topic, (const char*) payload, length);
     } 
-    
-    this->message_callback(topic, payload, length);
-
 }
 
 void MqttPublisher::add_stream(data_stream* stream)

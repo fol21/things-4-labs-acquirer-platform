@@ -45,6 +45,7 @@ public:
     void add_stream(data_stream*);
     void remove_stream(const char*);
     data_stream* find_stream(const char*);
+    void middlewares(char*, uint8_t*, unsigned int);
 
     PubSubClient* PubSub_Client(){return pubSubClient;}
 
@@ -57,7 +58,6 @@ protected:
 
     void(*message_callback)(char*, uint8_t*, unsigned int);
 
-    void middlewares(char*, uint8_t*, unsigned int);
 
     bool (*has_network)(void);
     bool (*network_start)(void);

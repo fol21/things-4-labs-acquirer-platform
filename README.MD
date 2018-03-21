@@ -5,3 +5,9 @@ This library allows to implement a publisher in a data stream structured, and al
 
 *note: Requires PubSubCLient and ArduinoJson libraries, you don't havo to worry in case of a PlatformIO build.*
 
+**Platforms testes**
+
+ - esp8266
+ - esp32
+ 
+ 
