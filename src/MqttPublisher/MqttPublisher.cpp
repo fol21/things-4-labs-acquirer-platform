@@ -67,14 +67,12 @@ void MqttPublisher::onMessage(void (*callback)(char*, uint8_t*, unsigned int))
  */ 
 void MqttPublisher::middlewares(char* topic, uint8_t* payload, unsigned int length)
 {
-    Serial.println("1");
-    if(strcmp(topic, "/" + (String(this->client_id) + CONFIGURE_STREAM_PATTERN_STRING + STREAM_PATTERN_STRING+CONTINOUS_STREAM_STRING).c_str()) == 0)
+    if(strcmp(topic,(String("/" ) +String(this->client_id) + CONFIGURE_STREAM_PATTERN_STRING + STREAM_PATTERN_STRING+CONTINOUS_STREAM_STRING).c_str()) == 0)
         {            
             this->c_stream.onMessage(topic, (const char*) payload, length);
         }
-    else if(strcmp(topic, "/" + (String(this->client_id) + CONFIGURE_STREAM_PATTERN_STRING + STREAM_PATTERN_STRING+PERIODIC_STREAM_STRING).c_str()) == 0)
+    else if(strcmp(topic,(String("/") + String(this->client_id) + CONFIGURE_STREAM_PATTERN_STRING + STREAM_PATTERN_STRING+PERIODIC_STREAM_STRING).c_str()) == 0)
         {
-            Serial.println("2");
             this->p_stream.onMessage(topic, (const char*) payload, length);
         }
     else 
@@ -177,28 +175,26 @@ bool MqttPublisher::reconnect(void(*handler)(void))
 
     if(this->state == NETWORK)
     {
-        Serial.println("1");
         if(this->pubSubClient->connect(this->client_id) || this->pubSubClient->connected())
         {
             
-            Serial.println("2");
             this->pubSubClient->subscribe(StringToCharArray(String("/") + String(this->client_id) + 
                                 CONFIGURE_STREAM_PATTERN_STRING+ 
                                 STREAM_PATTERN_STRING + 
                                 CONTINOUS_STREAM_STRING));
 
-            Serial.println("Data_Stream:" + "/" + String(this->client_id) + 
+            Serial.println("Data_Stream:" + String("/") + String(this->client_id) + 
                                 CONFIGURE_STREAM_PATTERN_STRING+ 
                                 STREAM_PATTERN_STRING + 
                                 CONTINOUS_STREAM_STRING);
 
-            this->pubSubClient->subscribe(String("/") + StringToCharArray(String(this->client_id) + 
+            this->pubSubClient->subscribe(StringToCharArray(String("/") + String(this->client_id) + 
                                 CONFIGURE_STREAM_PATTERN_STRING + 
                                 STREAM_PATTERN_STRING + 
                                 PERIODIC_STREAM_STRING));
 
-            Serial.println("Data_Stream:" + "/" + String(this->client_id) + 
-                                CONFIGURE_STREAM_PATTERN+ 
+            Serial.println("Data_Stream:" + String("/") + String(this->client_id) + 
+                                CONFIGURE_STREAM_PATTERN_STRING+ 
                                 STREAM_PATTERN_STRING + 
                                 PERIODIC_STREAM_STRING);                  
 
@@ -208,10 +204,15 @@ bool MqttPublisher::reconnect(void(*handler)(void))
                 for (std::list<data_stream*>::iterator it=this->streamList.begin(); 
                         it!=this->streamList.end(); ++it)
                 {
-                    this->pubSubClient->subscribe("/" + (String(this->client_id) +
+                    this->pubSubClient->subscribe((String("/") + String(this->client_id) +
                                         CONFIGURE_STREAM_PATTERN_STRING + 
                                         STREAM_PATTERN_STRING + 
-                                        String((*it)->Name())).c_str()); 
+                                        String((*it)->Name())).c_str());
+
+                    Serial.println("Data_Stream:" + String("/") + String(this->client_id) + 
+                                CONFIGURE_STREAM_PATTERN_STRING+ 
+                                STREAM_PATTERN_STRING + 
+                                String((*it)->Name()));
                 }
             }
             
