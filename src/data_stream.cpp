@@ -1,6 +1,9 @@
 #include <data_stream.h>
 
 
+/**
+ * Data Stream that send Data
+ */
 const char* data_stream::send(const char* message)
 {
    if(payload != NULL && !(this->lock))

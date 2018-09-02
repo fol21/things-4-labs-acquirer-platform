@@ -21,9 +21,15 @@ public:
     char* Name(){ return this ->name; };
 
 
-    //overridable stream process
+    /**
+     * Overridable stream processing Data in Data Stream Before send
+     */
     virtual void process() = 0;
 
+    /**
+     * Needs for implementing Data Stream Configuration Handling
+     * Configurations comes from JSON, that needs to be parsed here
+     */
     virtual void onMessage(char*, const char*, unsigned int) = 0;
 
     const char* send(const char*); // send message after process is done
@@ -85,7 +91,7 @@ class periodic_stream : public data_stream
             delay(this->millis);
         }
     protected:
-        int millis = 0;
+        int millis = 100;
 
 };
 

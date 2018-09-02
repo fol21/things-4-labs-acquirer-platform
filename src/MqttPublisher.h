@@ -5,6 +5,8 @@
 #define DEVICE_ID_PATTERN_STRING String("/id:")
 #define STREAM_PATTERN "/stream:"
 #define STREAM_PATTERN_STRING String("/stream:")
+#define CONFIGURE_STREAM_PATTERN "/configure"
+#define CONFIGURE_STREAM_PATTERN_STRING String("/configure")
 
 
 #include <string>
@@ -40,6 +42,7 @@ public:
     int Client_state();
     int Publisher_state();
 
+    
     void onMessage(void(*)(char*, uint8_t*, unsigned int));
 
     void add_stream(data_stream*);
