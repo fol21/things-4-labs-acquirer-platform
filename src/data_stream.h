@@ -77,6 +77,7 @@ class periodic_stream : public data_stream
             this->name = PERIODIC_STREAM;
             this->threshold = size;
         }
+        
 
         void onMessage(char* topic, const char* payload,unsigned int length)
         {
